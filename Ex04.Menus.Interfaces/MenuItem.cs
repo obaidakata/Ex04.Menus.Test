@@ -4,18 +4,30 @@ using System.Text;
 
 namespace Ex04.Menus.Interfaces
 {
-    interface ISubMenu
+    public interface ISubMenu
     {
 
     }
 
-    interface IOperation
+    public interface IOperation
     {
-
+        public void doWhenOperation();
     }
 
     public class MenuItem: ISubMenu, IOperation
     {
+        private MenuItem[] m_InnerMenuItems;
+        private string m_itemName;
+        public MenuItem(string i_itemName)
+        {
+            m_itemName = i_itemName;
+        }
+
+        public void doWhenOperation()
+        {
+
+        }
+
 
     }
 
