@@ -3,16 +3,35 @@ using System.Collections.Generic;
 
 public struct Item
 {
-    public Item[] m_InnerItems;
+    public List<Item> m_InnerItems;
     public string m_Name;
     public bool m_IsOperation;
+
+    public Item(int i_Size, string i_Name)
+    {
+        m_InnerItems = new List<Item>(i_Size);
+        m_Name = i_Name;
+        m_IsOperation = false;
+    }
+
+    public Item(string i_Name)
+    {
+        m_InnerItems = new List<Item>(0);
+        m_Name = i_Name;
+        m_IsOperation = true;
+    }
 
     public int Length
     {
         get
         {
-            return m_InnerItems.Length;
+            return m_InnerItems.Count;
         }
+    }
+
+    public void Add(Item i_InnerItem)
+    {
+        m_InnerItems.Add(i_InnerItem);
     }
 }
 
@@ -35,14 +54,12 @@ namespace Ex04.Menus.Interfaces
 
         private MenuItem AddHelper(Item m_Header)
         {
-            MenuItem header = new MenuItem(m_Header.m_Name);
-            if (m_Header.Length > 0)
+            MenuItem header = new MenuItem(m_Header.m_Name, m_Header.Length);
+
+            foreach (Item item in m_Header.m_InnerItems)
             {
-                foreach(Item item in m_Header.m_InnerItems)
-                {
-                    MenuItem subMenu = AddHelper(item);
-                    header.AddSubMenu(subMenu);
-                }
+                MenuItem subMenu = AddHelper(item);
+                header.AddSubMenu(subMenu);
             }
 
             return header;
@@ -51,7 +68,6 @@ namespace Ex04.Menus.Interfaces
         public  void Run()
         {
             int userInput;
-            string[] subMenu;
             for (int i = 0;i<3;i++)//Should be While(1)
             {
                 userInput = GetUserInput();
@@ -71,6 +87,19 @@ namespace Ex04.Menus.Interfaces
         public void Print()
         {
 
+        }
+
+
+        public void MakeTast()
+        {
+            Item VersionAndDigit = new Item(2, "Digits and Version");
+            Item countCaptials = new Item("Count Captials");
+            Item showVersion = new Item("Show Version");
+
+            VersionAndDigit.Add(countCaptials);
+            VersionAndDigit.Add(showVersion);
+
+            Add(VersionAndDigit);
         }
         
     }

@@ -16,33 +16,21 @@ namespace Ex04.Menus.Interfaces
 
     public class MenuItem: ISubMenu, IOperation
     {
-        private MenuItem[] m_InnerMenuItems;
+        private List<MenuItem> m_InnerMenuItems;
         private string m_HeaderName;
 
         public bool IsSubMenu
         {
             get
             {
-                return m_InnerMenuItems.Length == 0;
+                return m_InnerMenuItems.Count == 0;
             }
         }
 
-        public MenuItem(string i_HeaderName, params MenuItem[] i_SubMenu)
+        public MenuItem(string i_HeaderName, int i_SubMenuCount)
         {
             m_HeaderName = i_HeaderName;
-            m_InnerMenuItems = i_SubMenu;
-        }
-
-        public MenuItem()
-        {
-            //m_HeaderName = i_HeaderName;
-            m_InnerMenuItems = new MenuItem[] { };
-        }
-
-        public MenuItem(string i_HeaderName)
-        {
-            m_HeaderName = i_HeaderName;
-            m_InnerMenuItems = new MenuItem[] { };
+            m_InnerMenuItems = new List<MenuItem>(i_SubMenuCount);
         }
 
         public void doWhenOperation()
@@ -52,7 +40,7 @@ namespace Ex04.Menus.Interfaces
 
         public void AddSubMenu(MenuItem i_sun)
         {
-
+            m_InnerMenuItems.Add(i_sun);
         }
 
     }
