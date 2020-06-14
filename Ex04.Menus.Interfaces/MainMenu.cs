@@ -74,8 +74,6 @@ namespace Ex04.Menus.Interfaces
             MenuNavegate();
         }
 
-        
-
         private int getUserInput()
         {
             Console.WriteLine("Type");

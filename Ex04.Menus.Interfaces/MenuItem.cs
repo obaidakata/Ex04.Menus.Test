@@ -10,6 +10,7 @@ namespace Ex04.Menus.Interfaces
         private string m_HeaderName;
         private int m_Level;
         private bool m_IsOpen;
+
         public bool IsOperation
         {
             get
