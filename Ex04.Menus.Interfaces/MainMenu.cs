@@ -71,7 +71,7 @@ namespace Ex04.Menus.Interfaces
             for (int i = 0;i<3;i++)//Should be While(1)
             {
                 userInput = GetUserInput();
-                if(m_menuItems[userInput].IsSubMenu)
+                if(m_menuItems[userInput].IsOperation)
                 {
                     //subMenu = m_menuItems[userInput].SubMenu;
                 }

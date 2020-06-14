@@ -19,7 +19,7 @@ namespace Ex04.Menus.Interfaces
         private List<MenuItem> m_InnerMenuItems;
         private string m_HeaderName;
 
-        public bool IsSubMenu
+        public bool IsOperation
         {
             get
             {
