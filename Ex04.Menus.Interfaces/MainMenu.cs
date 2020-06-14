@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Threading;
 
 public struct Item
 {
@@ -39,17 +41,18 @@ namespace Ex04.Menus.Interfaces
 {
     public class MainMenu
     {
-        private List<MenuItem> m_menuItems;
+        private MenuItem m_menuRoot;
 
         public MainMenu(int i_Size)
         {
-            m_menuItems = new List<MenuItem>(i_Size);
+            m_menuRoot = new MenuItem("Header", i_Size);
+            m_menuRoot.setAsRoot();
         }
         
         public void Add(Item m_Header)
         {
             MenuItem header = AddHelper(m_Header);
-            m_menuItems.Add(header);
+            m_menuRoot.AddSubMenu(header);
         }
 
         private MenuItem AddHelper(Item m_Header)
@@ -83,7 +86,7 @@ namespace Ex04.Menus.Interfaces
         public void PrintPreview()
         {
             Console.WriteLine(" -------Menu Preview-----------");
-            foreach (MenuItem menuItem in m_menuItems)
+            foreach (MenuItem menuItem in m_menuRoot.InnerMenu)
             {
                 PrintHelper(menuItem);
             }
@@ -106,38 +109,65 @@ namespace Ex04.Menus.Interfaces
             }
         }
 
-        public void MakeTast()
-        {
-            Item VersionAndDigit = new Item(2, "Digits and Version");
-            Item countCaptials = new Item("Count Captials");
-            Item showVersion = new Item("Show Version");
-
-            VersionAndDigit.Add(countCaptials);
-            VersionAndDigit.Add(showVersion);
-
-            Add(VersionAndDigit);
-        }
-
         private void MenuNavegate()
         {
-            
-            int userInput = getUserInput();
-            m_menuItems[userInput].IsOpen = true;
+            print();
+            Stack<MenuItem> HierarchyStack = new Stack<MenuItem>();
+            MenuItem current = m_menuRoot;
+            print();
+            int userInput;
+            do
+            {
+                userInput = getUserInput();
+                if(userInput == -5)
+                {
+                    if (HierarchyStack.Count > 0)
+                    {
+                        current.IsOpen = false;
+                        current = HierarchyStack.Pop(); 
+                    }
+                }
+                else if(!current[userInput].IsOperation)
+                {
+                    HierarchyStack.Push(current);
+                    current = current[userInput];
+                    current.IsOpen = true;
+                   
+                }
+                else
+                {
+                    Console.WriteLine("error, Type Agin");
+                    Thread.Sleep(3000);
+                }
 
-
+                print();
+            } while (true);
         }
 
-        private void print(MenuItem menuItem)
+        private void print()
         {
-            for (int i = 0; i < menuItem.Count; i++)
+            Console.Clear();
+            foreach (MenuItem menuItem in m_menuRoot.InnerMenu)
             {
-                Console.WriteLine(m_menuItems[i].Name);
-                if (m_menuItems[i].IsOpen)
-                {
-                    PrintHelper(m_menuItems[i]);
-                }
+                PrintH(menuItem);
             }
         }
 
+        public void PrintH(MenuItem menuItem)
+        {
+            
+            Console.WriteLine(menuItem.Name);
+            foreach (MenuItem innerMenu in menuItem.InnerMenu)
+            {
+                if (menuItem.IsOpen)
+                {
+                    for (int i = 0; i < innerMenu.Level - 1; i++)
+                    {
+                        Console.Write("     ");
+                    }
+                    PrintH(innerMenu);
+                }
+            }
+        }
     }
 }

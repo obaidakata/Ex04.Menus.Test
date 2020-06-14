@@ -60,6 +60,12 @@ namespace Ex04.Menus.Interfaces
         {
             m_HeaderName = i_HeaderName;
             m_InnerMenuItems = new List<MenuItem>(i_SubMenuCount);
+            m_Level = 1;
+            m_IsOpen = false;
+        }
+
+        public void setAsRoot()
+        {
             m_Level = 0;
         }
 
@@ -71,6 +77,14 @@ namespace Ex04.Menus.Interfaces
                menuItem.m_Level = i_sun.m_Level + 1;
             }
             m_InnerMenuItems.Add(i_sun);
+        }
+
+        public MenuItem this[int i]
+        {
+            get
+            {
+                return m_InnerMenuItems[i];
+            }
         }
     }
 
