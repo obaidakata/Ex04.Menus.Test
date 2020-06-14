@@ -9,11 +9,25 @@ namespace Ex04.Menus.Interfaces
         private List<MenuItem> m_InnerMenuItems;
         private string m_HeaderName;
         private int m_Level;
+        private bool m_IsOpen;
         public bool IsOperation
         {
             get
             {
                 return m_InnerMenuItems.Count == 0;
+            }
+        }
+
+        public bool IsOpen
+        {
+            get
+            {
+                return m_IsOpen;
+            }
+
+            set
+            {
+                m_IsOpen = value;
             }
         }
 
@@ -25,6 +39,7 @@ namespace Ex04.Menus.Interfaces
             }
 
         }
+
         public List<MenuItem> InnerMenu
         {
             get
@@ -57,8 +72,6 @@ namespace Ex04.Menus.Interfaces
             }
             m_InnerMenuItems.Add(i_sun);
         }
-
-
     }
 
 

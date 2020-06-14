@@ -68,33 +68,14 @@ namespace Ex04.Menus.Interfaces
         public  void Run()
         {
             PrintPreview();
-
-            int userInput;
-
-            
-            for (int i = 0;i<3;i++)//Should be While(1)
-            {
-                foreach (MenuItem menuItem in m_menuItems)
-                {
-                    print(menuItem, false);
-                }
-
-                userInput = GetUserInput();
-                
-            }
+            MenuNavegate();
         }
 
-        private void print(MenuItem menuItem, bool i_IsInner)
-        {
-            if (i_IsInner)
-            {
-                Console.Write("     ");
-            }
-            Console.WriteLine(menuItem.Name);
-        }
+        
 
-        public int GetUserInput()
+        private int getUserInput()
         {
+            Console.WriteLine("Type");
             string userInput = Console.ReadLine();
             return int.Parse(userInput);
         }
@@ -136,6 +117,27 @@ namespace Ex04.Menus.Interfaces
 
             Add(VersionAndDigit);
         }
-        
+
+        private void MenuNavegate()
+        {
+            
+            int userInput = getUserInput();
+            m_menuItems[userInput].IsOpen = true;
+
+
+        }
+
+        private void print(MenuItem menuItem)
+        {
+            for (int i = 0; i < menuItem.Count; i++)
+            {
+                Console.WriteLine(m_menuItems[i].Name);
+                if (m_menuItems[i].IsOpen)
+                {
+                    PrintHelper(m_menuItems[i]);
+                }
+            }
+        }
+
     }
 }
