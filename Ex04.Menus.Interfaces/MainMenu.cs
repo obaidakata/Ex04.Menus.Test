@@ -1,30 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
 
+public struct Item
+{
+    public Item[] m_InnerItems;
+    public string m_Name;
+    public bool m_IsOperation;
+
+    public int Length
+    {
+        get
+        {
+            return m_InnerItems.Length;
+        }
+    }
+}
+
 namespace Ex04.Menus.Interfaces
 {
     public class MainMenu
     {
         private List<MenuItem> m_menuItems;
 
-        public MainMenu()
+        public MainMenu(int i_Size)
         {
-            m_menuItems = new List<MenuItem>();
+            m_menuItems = new List<MenuItem>(i_Size);
         }
         
-        public IOperation AddOperationToMenu(string i_OperationName)
+        public void Add(Item m_Header)
         {
-            MenuItem operation = new MenuItem(i_OperationName);
-            m_menuItems.Add(operation);
-
-            return operation;
+            MenuItem header = AddHelper(m_Header);
+            m_menuItems.Add(header);
         }
 
-        public void AddSubMenuToMenu(string i_SubMenuName)
+        private MenuItem AddHelper(Item m_Header)
         {
-            MenuItem subMenu = new MenuItem(i_SubMenuName);
-            m_menuItems.Add(subMenu);
+            MenuItem header = new MenuItem(m_Header.m_Name);
+            if (m_Header.Length > 0)
+            {
+                foreach(Item item in m_Header.m_InnerItems)
+                {
+                    MenuItem subMenu = AddHelper(item);
+                    header.AddSubMenu(subMenu);
+                }
+            }
 
+            return header;
         }
 
         public  void Run()
@@ -34,9 +55,9 @@ namespace Ex04.Menus.Interfaces
             for (int i = 0;i<3;i++)//Should be While(1)
             {
                 userInput = GetUserInput();
-                if(m_menuItems[userInput].HasSubMenu)
+                if(m_menuItems[userInput].IsSubMenu)
                 {
-                    subMenu = m_menuItems[userInput].SubMenu;
+                    //subMenu = m_menuItems[userInput].SubMenu;
                 }
             }
         }
