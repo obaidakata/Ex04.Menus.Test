@@ -4,21 +4,11 @@ using System.Text;
 
 namespace Ex04.Menus.Interfaces
 {
-    public interface ISubMenu
-    {
-
-    }
-
-    public interface IOperation
-    {
-        public void doWhenOperation();
-    }
-
-    public class MenuItem: ISubMenu, IOperation
+    public class MenuItem
     {
         private List<MenuItem> m_InnerMenuItems;
         private string m_HeaderName;
-
+        private int m_Level;
         public bool IsOperation
         {
             get
@@ -27,21 +17,47 @@ namespace Ex04.Menus.Interfaces
             }
         }
 
+        public int Level
+        {
+            get
+            {
+                return m_Level;
+            }
+
+        }
+        public List<MenuItem> InnerMenu
+        {
+            get
+            {
+                return m_InnerMenuItems;
+            }
+        }
+
+        public string Name
+        {
+            get
+            {
+                return m_HeaderName;
+            }
+        }
+
         public MenuItem(string i_HeaderName, int i_SubMenuCount)
         {
             m_HeaderName = i_HeaderName;
             m_InnerMenuItems = new List<MenuItem>(i_SubMenuCount);
-        }
-
-        public void doWhenOperation()
-        {
-
+            m_Level = 0;
         }
 
         public void AddSubMenu(MenuItem i_sun)
         {
+            i_sun.m_Level = m_Level +1;
+            foreach(MenuItem menuItem in i_sun.m_InnerMenuItems)
+            {
+               menuItem.m_Level = i_sun.m_Level + 1;
+            }
             m_InnerMenuItems.Add(i_sun);
         }
+
 
     }
 

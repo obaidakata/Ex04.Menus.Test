@@ -19,12 +19,17 @@ namespace Ex04.Menus.Test
 
             Item timeDataShow = new Item(2, "Time/Date Show");
             Item timeShow = new Item("Time Show");
+            Item x = new Item("Obaida");
+            timeShow.Add(x);
             Item dataShow = new Item("Date Show");
 
-            VersionAndDigit.Add(timeShow);
-            VersionAndDigit.Add(dataShow);
+            timeDataShow.Add(timeShow);
+            timeDataShow.Add(dataShow);
 
+            
             menu1.Add(timeDataShow);
+            
+            menu1.Run();
         }
 
     }

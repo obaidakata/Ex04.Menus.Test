@@ -67,15 +67,30 @@ namespace Ex04.Menus.Interfaces
 
         public  void Run()
         {
+            PrintPreview();
+
             int userInput;
+
+            
             for (int i = 0;i<3;i++)//Should be While(1)
             {
-                userInput = GetUserInput();
-                if(m_menuItems[userInput].IsOperation)
+                foreach (MenuItem menuItem in m_menuItems)
                 {
-                    //subMenu = m_menuItems[userInput].SubMenu;
+                    print(menuItem, false);
                 }
+
+                userInput = GetUserInput();
+                
             }
+        }
+
+        private void print(MenuItem menuItem, bool i_IsInner)
+        {
+            if (i_IsInner)
+            {
+                Console.Write("     ");
+            }
+            Console.WriteLine(menuItem.Name);
         }
 
         public int GetUserInput()
@@ -84,11 +99,31 @@ namespace Ex04.Menus.Interfaces
             return int.Parse(userInput);
         }
 
-        public void Print()
+        public void PrintPreview()
         {
-
+            Console.WriteLine(" -------Menu Preview-----------");
+            foreach (MenuItem menuItem in m_menuItems)
+            {
+                PrintHelper(menuItem);
+            }
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("-------------------------------");
         }
 
+        public void PrintHelper(MenuItem menuItem)
+        {
+            Console.WriteLine(menuItem.Name);
+
+            foreach (MenuItem innerMenu in menuItem.InnerMenu)
+            {
+                for (int i = 0; i < innerMenu.Level; i++)
+                {
+                    Console.Write("     ");
+                }
+                PrintHelper(innerMenu);
+            }
+        }
 
         public void MakeTast()
         {
