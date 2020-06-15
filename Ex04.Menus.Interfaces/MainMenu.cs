@@ -49,26 +49,12 @@ namespace Ex04.Menus.Interfaces
             m_menuRoot.setAsRoot();
         }
         
-        public void Add(Item m_Header)
+        public void Add(MenuItem m_Header)
         {
-            MenuItem header = AddHelper(m_Header);
-            m_menuRoot.AddSubMenu(header);
+            m_menuRoot.AddSubMenu(m_Header);
         }
 
-        private MenuItem AddHelper(Item m_Header)
-        {
-            MenuItem header = new MenuItem(m_Header.m_Name, m_Header.Length);
-
-            foreach (Item item in m_Header.m_InnerItems)
-            {
-                MenuItem subMenu = AddHelper(item);
-                header.AddSubMenu(subMenu);
-            }
-
-            return header;
-        }
-
-        public  void Run()
+        public  void Show()
         {
             PrintPreview();
             MenuNavegate();

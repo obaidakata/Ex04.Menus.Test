@@ -4,8 +4,20 @@ using System.Text;
 
 namespace Ex04.Menus.Interfaces
 {
+    public interface IClickObserver
+    {
+        void Update(MenuItem i_Sender);
+    }
+
+    public interface IClickAble
+    {
+        void Add(IClickObserver i_observer);
+        void Notify();
+    }
+
     public class MenuItem
     {
+        private List<IClickObserver> m_ClickObserver;
         private List<MenuItem> m_InnerMenuItems;
         private string m_HeaderName;
         private int m_Level;
@@ -65,6 +77,14 @@ namespace Ex04.Menus.Interfaces
             m_IsOpen = false;
         }
 
+        public MenuItem(string i_HeaderName)
+        {
+            m_HeaderName = i_HeaderName;
+            m_InnerMenuItems = null;
+            m_Level = 1;
+            m_IsOpen = false;
+        }
+
         public void setAsRoot()
         {
             m_Level = 0;
@@ -86,6 +106,11 @@ namespace Ex04.Menus.Interfaces
             {
                 return m_InnerMenuItems[i];
             }
+        }
+
+        public void Add(IClickObserver i_ClickObserver)
+        {
+            m_ClickObserver.Add(i_ClickObserver);
         }
     }
 
