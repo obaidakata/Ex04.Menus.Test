@@ -41,12 +41,12 @@ namespace Ex04.Menus.Interfaces
 {
     public class MainMenu: IClickObserver
     {
-        private List<SubMenu> m_menu;
+        private List<MenuItem> m_menu;
         private Oparetion exit;
 
         public MainMenu(params MenuItem[] subMenues)
         {
-            m_menu = new SubMenu();
+            m_menu = new List<MenuItem>();
             foreach(MenuItem menuItem in subMenues)
             {
                 m_menu.Add(menuItem);
