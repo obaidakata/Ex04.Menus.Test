@@ -9,38 +9,38 @@ namespace Ex04.Menus.Test
     public class InterfaceMenu: IClickObserver
     {
         Interfaces.MainMenu menu = new Interfaces.MainMenu(2);
-        Interfaces.MenuItem versionAndDigit;
-        Interfaces.MenuItem countCaptials;
-        Interfaces.MenuItem showVersion;
 
-        Interfaces.MenuItem timeDataShow;
-        Interfaces.MenuItem timeShow;
-        Interfaces.MenuItem dataShow;
+        Interfaces.SubMenu versionAndDigit;
+        Interfaces.Oparetion countCaptials;
+        Interfaces.Oparetion showVersion;
+
+        Interfaces.SubMenu timeDataShow;
+        Interfaces.Oparetion timeShow;
+        Interfaces.Oparetion dataShow;
 
         public InterfaceMenu(int i_MenuSize)
         {
-            menu = new Interfaces.MainMenu(i_MenuSize);
-            versionAndDigit = new Interfaces.MenuItem("Digits and Version", 2);
-            countCaptials = new Interfaces.MenuItem("Count Captials");
+            versionAndDigit = new SubMenu("Digits and Version");
+            countCaptials = new Oparetion("Count Captials");
             countCaptials.Add(this as IClickObserver);
-            showVersion = new Interfaces.MenuItem("Show Version");
+            showVersion = new Interfaces.Oparetion("Show Version");
             countCaptials.Add(this as IClickObserver);
 
-            versionAndDigit.AddSubMenu(countCaptials);
-            versionAndDigit.AddSubMenu(showVersion);
+            versionAndDigit.AddAsSubMenu(countCaptials);
+            versionAndDigit.AddAsSubMenu(showVersion);
 
-            menu.Add(versionAndDigit);
+            //menu.Add(versionAndDigit);
 
-            timeDataShow = new Interfaces.MenuItem("Time/Date Show", 2);
-            timeShow = new Interfaces.MenuItem("Time Show");
+            timeDataShow = new SubMenu("Time/Date Show");
+            timeShow = new Oparetion("Time Show");
             timeShow.Add(this as IClickObserver);
-            dataShow = new Interfaces.MenuItem("Date Show");
+            dataShow = new Oparetion("Date Show");
             dataShow.Add(this as IClickObserver);
 
-            timeDataShow.AddSubMenu(timeShow);
-            timeDataShow.AddSubMenu(dataShow);
+            timeDataShow.AddAsSubMenu(timeShow);
+            timeDataShow.AddAsSubMenu(dataShow);
 
-            menu.Add(timeDataShow);
+            menu = new MainMenu(versionAndDigit, timeDataShow);
         }
 
         public void ShowInterfaceMenu()

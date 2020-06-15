@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
-
-public struct Item
+/*public struct Item
 {
     public List<Item> m_InnerItems;
     public string m_Name;
@@ -36,28 +35,47 @@ public struct Item
         m_InnerItems.Add(i_InnerItem);
     }
 }
+*/
 
 namespace Ex04.Menus.Interfaces
 {
-    public class MainMenu
+    public class MainMenu: IClickObserver
     {
-        private MenuItem m_menuRoot;
+        private List<SubMenu> m_menu;
+        private Oparetion exit;
 
-        public MainMenu(int i_Size)
+        public MainMenu(params MenuItem[] subMenues)
         {
-            m_menuRoot = new MenuItem("Header", i_Size);
-            m_menuRoot.setAsRoot();
+            m_menu = new SubMenu();
+            foreach(MenuItem menuItem in subMenues)
+            {
+                m_menu.Add(menuItem);
+            }
+            exit = new Oparetion("Exit");
+            m_menu.Add(exit);
         }
         
         public void Add(MenuItem m_Header)
         {
-            m_menuRoot.AddSubMenu(m_Header);
+            m_menu.Add(m_Header);
         }
 
         public  void Show()
         {
-            PrintPreview();
+            //PrintPreview();
             MenuNavegate();
+        }
+
+        public void Update(Oparetion i_Sender)
+        {
+            if(i_Sender == exit)
+            {
+                Environment.Exit(0);
+            }
+            else if(i_Sender == SubMenu.BackOperation)// check meybe can emplemnt better
+            {
+
+            }
         }
 
         private int getUserInput()
@@ -66,77 +84,46 @@ namespace Ex04.Menus.Interfaces
             string userInput = Console.ReadLine();
             return int.Parse(userInput);
         }
-
-        public void PrintPreview()
-        {
-            Console.WriteLine(" -------Menu Preview-----------");
-            foreach (MenuItem menuItem in m_menuRoot.InnerMenu)
-            {
-                PrintHelper(menuItem);
-            }
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("-------------------------------");
-        }
-
-        public void PrintHelper(MenuItem menuItem)
-        {
-            Console.WriteLine(menuItem.Name);
-
-            foreach (MenuItem innerMenu in menuItem.InnerMenu)
-            {
-                for (int i = 0; i < innerMenu.Level; i++)
-                {
-                    Console.Write("     ");
-                }
-                PrintHelper(innerMenu);
-            }
-        }
-
         private void MenuNavegate()
         {
-            print();
+            printMenu();
             Stack<MenuItem> HierarchyStack = new Stack<MenuItem>();
-            MenuItem current = m_menuRoot;
-            print();
             int userInput;
+            MenuItem current;
             do
             {
                 userInput = getUserInput();
-                if(userInput == -5)
+                // Check if userInput valid
+                current = m_menu[userInput];
+                if (current == SubMenu.BackOperation)
                 {
                     if (HierarchyStack.Count > 0)
                     {
-                        current.IsOpen = false;
+                        if (current is SubMenu)
+                        {
+                            (current as SubMenu).Open = false;
+                        }
                         current = HierarchyStack.Pop(); 
                     }
                 }
-                else if(!current[userInput].IsOperation)
-                {
-                    HierarchyStack.Push(current);
-                    current = current[userInput];
-                    current.IsOpen = true;
-                   
-                }
                 else
                 {
-                    Console.WriteLine("error, Type Agin");
-                    Thread.Sleep(3000);
+                    HierarchyStack.Push(current);
+                    current.Click();
+                    current = (current as SubMenu)[userInput];
                 }
-
-                print();
             } while (true);
         }
 
-        private void print()
+        private void printMenu()
         {
             Console.Clear();
-            foreach (MenuItem menuItem in m_menuRoot.InnerMenu)
+            foreach (SubMenu menuItem in m_menu)
             {
-                PrintH(menuItem);
+                menuItem.Print();
             }
         }
-
+        /*
         public void PrintH(MenuItem menuItem)
         {
             
@@ -153,5 +140,6 @@ namespace Ex04.Menus.Interfaces
                 }
             }
         }
+*/
     }
 }

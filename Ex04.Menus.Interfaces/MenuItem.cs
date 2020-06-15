@@ -6,60 +6,18 @@ namespace Ex04.Menus.Interfaces
 {
     public interface IClickObserver
     {
-        void Update(MenuItem i_Sender);
+        void Update(Oparetion i_Sender);
     }
 
-    public interface IClickAble
+    public interface IClickable
     {
         void Add(IClickObserver i_observer);
         void Notify();
     }
 
-    public class MenuItem
+    public abstract class MenuItem
     {
-        private List<IClickObserver> m_ClickObserver;
-        private List<MenuItem> m_InnerMenuItems;
-        private string m_HeaderName;
-        private int m_Level;
-        private bool m_IsOpen;
-
-        public bool IsOperation
-        {
-            get
-            {
-                return m_InnerMenuItems.Count == 0;
-            }
-        }
-
-        public bool IsOpen
-        {
-            get
-            {
-                return m_IsOpen;
-            }
-
-            set
-            {
-                m_IsOpen = value;
-            }
-        }
-
-        public int Level
-        {
-            get
-            {
-                return m_Level;
-            }
-
-        }
-
-        public List<MenuItem> InnerMenu
-        {
-            get
-            {
-                return m_InnerMenuItems;
-            }
-        }
+        protected string m_HeaderName;
 
         public string Name
         {
@@ -69,35 +27,49 @@ namespace Ex04.Menus.Interfaces
             }
         }
 
-        public MenuItem(string i_HeaderName, int i_SubMenuCount)
+        protected MenuItem(string i_HeaderName)
         {
             m_HeaderName = i_HeaderName;
-            m_InnerMenuItems = new List<MenuItem>(i_SubMenuCount);
-            m_Level = 1;
-            m_IsOpen = false;
         }
 
-        public MenuItem(string i_HeaderName)
-        {
-            m_HeaderName = i_HeaderName;
-            m_InnerMenuItems = null;
-            m_Level = 1;
-            m_IsOpen = false;
-        }
+        public abstract void Click();
 
-        public void setAsRoot()
+        public void PrintName()
         {
-            m_Level = 0;
+            Console.WriteLine(m_HeaderName);
         }
+    }
 
-        public void AddSubMenu(MenuItem i_sun)
+    public class SubMenu : MenuItem
+    {
+        private List<MenuItem> m_InnerMenuItems;
+        private static Oparetion m_Back;
+        private bool m_Open;
+
+        public static Oparetion BackOperation
         {
-            i_sun.m_Level = m_Level +1;
-            foreach(MenuItem menuItem in i_sun.m_InnerMenuItems)
+            get
             {
-               menuItem.m_Level = i_sun.m_Level + 1;
+                return m_Back;
             }
-            m_InnerMenuItems.Add(i_sun);
+        }
+
+        public bool Open
+        {
+            get
+            {
+                return m_Open;
+            }
+
+            set
+            {
+                m_Open = value;
+            }
+        }
+
+        public SubMenu(string i_HeaderName) : base(i_HeaderName)
+        {
+            m_Back = new Oparetion("Exit");
         }
 
         public MenuItem this[int i]
@@ -108,11 +80,64 @@ namespace Ex04.Menus.Interfaces
             }
         }
 
+        public List<MenuItem> InnerMenu
+        {
+            get
+            {
+                return m_InnerMenuItems;
+            }
+        }
+
+        public void AddAsSubMenu(MenuItem i_sun)
+        {
+            m_InnerMenuItems.Add(i_sun);
+        }
+
+        public void setAsRoot()
+        {
+            //m_Level = 0;
+        }
+
+        public override void Click()
+        {
+            Console.Clear();
+            Print();
+        }
+
+        public void Print()
+        {
+            foreach(MenuItem innerMenu in m_InnerMenuItems)
+            {
+                innerMenu.PrintName();
+            }
+        }
+
+    }
+
+    public class Oparetion : MenuItem, IClickable
+    {
+        private List<IClickObserver> m_ClickObserver;
+
+        public Oparetion(string i_HeaderName) : base(i_HeaderName)
+        {
+
+        }
+
+        public void Notify()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Add(IClickObserver i_ClickObserver)
         {
             m_ClickObserver.Add(i_ClickObserver);
         }
-    }
 
+        public override void Click()
+        {
+            // do requaerd operation
+        }
+
+    }
 
 }
