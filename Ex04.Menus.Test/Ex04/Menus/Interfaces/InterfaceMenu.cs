@@ -1,5 +1,6 @@
 ﻿using Ex04.Menus.Interfaces;
 using System;
+using System.Threading;
 using Interfaces = Ex04.Menus.Interfaces;
 
 
@@ -10,35 +11,35 @@ namespace Ex04.Menus.Test
     {
         Interfaces.MainMenu menu;
 
-        Interfaces.SubMenu versionAndDigits;
-        Interfaces.Oparetion countCaptials;
-        Interfaces.Oparetion showVersion;
+        Interfaces.SubMenu m_VersionAndDigits;
+        Interfaces.Oparetion m_CountCaptials;
+        Interfaces.Oparetion m_ShowVersion;
 
-        Interfaces.SubMenu ShowtimeData;
-        Interfaces.Oparetion timeShow;
-        Interfaces.Oparetion dataShow;
+        Interfaces.SubMenu m_ShowtimeData;
+        Interfaces.Oparetion m_TimeShow;
+        Interfaces.Oparetion m_DataShow;
 
         public InterfaceMenu(int i_MenuSize)
         {
-            versionAndDigits = new SubMenu("Version And Digits");
-            countCaptials = new Oparetion("Count Captials");
-            countCaptials.Add(this as IClickObserver);
-            showVersion = new Interfaces.Oparetion("Show Version");
-            countCaptials.Add(this as IClickObserver);
+            m_VersionAndDigits = new SubMenu("Version And Digits");
+            m_CountCaptials = new Oparetion("Count Captials");
+            m_CountCaptials.Add(this as IClickObserver);
+            m_ShowVersion = new Interfaces.Oparetion("Show Version");
+            m_ShowVersion.Add(this as IClickObserver);
 
-            versionAndDigits.AddAsSubMenu(countCaptials);
-            versionAndDigits.AddAsSubMenu(showVersion);
+            m_VersionAndDigits.AddAsSubMenu(m_CountCaptials);
+            m_VersionAndDigits.AddAsSubMenu(m_ShowVersion);
 
-            ShowtimeData = new SubMenu("Show Time/Date ");
-            timeShow = new Oparetion("Time Show");
-            timeShow.Add(this as IClickObserver);
-            dataShow = new Oparetion("Date Show");
-            dataShow.Add(this as IClickObserver);
+            m_ShowtimeData = new SubMenu("Show Time/Date ");
+            m_TimeShow = new Oparetion("Time Show");
+            m_TimeShow.Add(this as IClickObserver);
+            m_DataShow = new Oparetion("Date Show");
+            m_DataShow.Add(this as IClickObserver);
 
-            ShowtimeData.AddAsSubMenu(timeShow);
-            ShowtimeData.AddAsSubMenu(dataShow);
+            m_ShowtimeData.AddAsSubMenu(m_TimeShow);
+            m_ShowtimeData.AddAsSubMenu(m_DataShow);
 
-            menu = new MainMenu(versionAndDigits, ShowtimeData);
+            menu = new MainMenu(m_VersionAndDigits, m_ShowtimeData);
         }
 
         public void ShowInterfaceMenu()
@@ -48,31 +49,32 @@ namespace Ex04.Menus.Test
 
         public void Update(Oparetion i_Sender)
         {
-            if(i_Sender == countCaptials)
+            if (i_Sender == m_CountCaptials)
             {
-
+                countCapitals();
             }
-            else if (i_Sender == showVersion)
+            else if (i_Sender == m_ShowVersion)
             {
-
+                showVersion();
             }
-            else if (i_Sender == timeShow)
+            else if (i_Sender == m_TimeShow)
             {
-
+                ShowTime();
             }
-            else if (i_Sender == dataShow)
+            else if (i_Sender == m_DataShow)
             {
-
+                ShowDate();
             }
             else
             {
                 throw new Exception("sender unrecogizble");
             }
+            Thread.Sleep(3000);
         }
 
         
 
-        public void CountCapitals()
+        private void countCapitals()
         {
             Console.WriteLine("Please Insert a senctece");
             string input = Console.ReadLine();
@@ -95,17 +97,17 @@ namespace Ex04.Menus.Test
             }
         }
 
-        public void ShowVersion()
+        private void showVersion()
         {
             Console.WriteLine("Version: 20.2.4.30620");
         }
 
-        public void ShowTime()
+        private void ShowTime()
         {
             Console.WriteLine(string.Format("Current time is : {0}", DateTime.Now.ToString("HH:mm:ss")));
         }
 
-        public void ShowDate()
+        private void ShowDate()
         {
             Console.WriteLine(string.Format("Today's date is : {0}", DateTime.Now.Date.ToString("dd/mm/yyyy")));
         }

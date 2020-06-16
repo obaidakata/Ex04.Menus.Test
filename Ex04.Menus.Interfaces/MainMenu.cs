@@ -44,21 +44,27 @@ namespace Ex04.Menus.Interfaces
         private SubMenu m_menu;
         private Oparetion m_Exit;
         private Oparetion m_Back;
+        private Stack<MenuItem> m_HierarchyStack;
+        private MenuItem m_CurentChosenMenuItem;
         public MainMenu(params MenuItem[] subMenues)
         {
+            m_HierarchyStack = new Stack<MenuItem>();
             m_Exit = new Oparetion("Exit");
-            m_Back = new Oparetion("Back");
             m_Exit.Add(this as IClickObserver);
+            m_Back = new Oparetion("Back");
+            m_Back.Add(this as IClickObserver);
+
             m_menu = new SubMenu("Menu root");
             m_menu.SetReturnMenu(m_Exit);
             foreach(MenuItem menuItem in subMenues)
             {
                 if(menuItem is SubMenu)
                 {
-
+                    (menuItem as SubMenu).SetReturnMenu(m_Back);
                 }
                 m_menu.AddAsSubMenu(menuItem);
             }
+            m_CurentChosenMenuItem = m_menu;
         }
         
         public  void Show()
@@ -72,6 +78,18 @@ namespace Ex04.Menus.Interfaces
             {
                 Environment.Exit(0);
             }
+            else if (i_Sender == m_Back)
+            {
+                if (m_HierarchyStack.Count > 0)
+                {
+                    m_CurentChosenMenuItem = m_HierarchyStack.Pop();
+                }
+                if (m_HierarchyStack.Count > 0)
+                {
+                    m_CurentChosenMenuItem = m_HierarchyStack.Pop();
+                }
+                (m_CurentChosenMenuItem as SubMenu).Click();
+            }
         }
 
         private int getUserInput() // Check if userInput valid
@@ -83,35 +101,22 @@ namespace Ex04.Menus.Interfaces
 
         private void MenuNavegate()
         {
-            m_menu.Print();
-            Stack<MenuItem> HierarchyStack = new Stack<MenuItem>();
-            MenuItem current = m_menu;
             int userInput;
             do
             {
-                current.Click();
-                if (current is Oparetion)
-                {
-                    Thread.Sleep(3000);
-                    if (HierarchyStack.Count > 0)
-                    {
-                        current = HierarchyStack.Pop();
-                    }
-                }
-                else if (current is SubMenu)
+                m_CurentChosenMenuItem.Click();
+
+                if (m_CurentChosenMenuItem is SubMenu)
                 {
                     userInput = getUserInput();
-                    if ((current as SubMenu).IsLastIndex(userInput))
+                    m_HierarchyStack.Push(m_CurentChosenMenuItem);
+                    m_CurentChosenMenuItem = (m_CurentChosenMenuItem as SubMenu)[userInput];
+                }
+                else 
+                {
+                    if (m_HierarchyStack.Count > 0)
                     {
-                        if (HierarchyStack.Count > 0)
-                        {
-                            current = HierarchyStack.Pop();
-                        }
-                    }
-                    else
-                    {
-                        HierarchyStack.Push(current);
-                        current = (current as SubMenu)[userInput];
+                        m_CurentChosenMenuItem = m_HierarchyStack.Pop();
                     }
                 }
 

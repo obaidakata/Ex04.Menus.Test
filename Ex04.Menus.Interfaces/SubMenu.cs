@@ -11,7 +11,7 @@ namespace Ex04.Menus.Interfaces
 
         public SubMenu(string i_HeaderName ): base(i_HeaderName)
         {
-            m_InnerMenuItems = new List<MenuItem>();
+            m_InnerMenuItems = new List<MenuItem>(0);
         }
 
         public MenuItem this[int i]
@@ -25,7 +25,14 @@ namespace Ex04.Menus.Interfaces
 
         public void AddAsSubMenu(MenuItem i_sun)
         {
-            m_InnerMenuItems.Insert(m_InnerMenuItems.Count - 1, i_sun);
+            if(m_InnerMenuItems.Count > 0)
+            {
+                m_InnerMenuItems.Insert(m_InnerMenuItems.Count -1, i_sun);
+            }
+            else
+            {
+                m_InnerMenuItems.Add(i_sun);
+            }
         }
 
 

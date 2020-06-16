@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Ex04.Menus.Interfaces
 {
@@ -15,11 +16,11 @@ namespace Ex04.Menus.Interfaces
     }
     public class Oparetion : MenuItem, IClickable
     {
-        private List<IClickObserver> m_ClickObserver;
+        private List<IClickObserver> m_ClickObservers;
 
         public Oparetion(string i_HeaderName) : base(i_HeaderName)
         {
-            m_ClickObserver = new List<IClickObserver>();
+            m_ClickObservers = new List<IClickObserver>();
         }
 
         public void Notify()
@@ -29,13 +30,13 @@ namespace Ex04.Menus.Interfaces
 
         public void Add(IClickObserver i_ClickObserver)
         {
-            m_ClickObserver.Add(i_ClickObserver);
+            m_ClickObservers.Add(i_ClickObserver);
         }
 
         public override void Click()
         {
-            // do requaerd operation
-            foreach (IClickObserver observer in m_ClickObserver)
+            Console.Clear();
+            foreach (IClickObserver observer in m_ClickObservers)
             {
                 observer.Update(this);
             }
