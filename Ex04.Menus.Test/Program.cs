@@ -9,8 +9,6 @@ namespace Ex04.Menus.Test
         {
             InterfaceMenu interfaceMenu = new InterfaceMenu(2);
             interfaceMenu.ShowInterfaceMenu();
-
         }
-
     }
 }

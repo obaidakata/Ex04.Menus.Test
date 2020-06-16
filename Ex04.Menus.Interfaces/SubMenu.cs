@@ -9,7 +9,7 @@ namespace Ex04.Menus.Interfaces
         private List<MenuItem> m_InnerMenuItems;
         private Oparetion m_ReturnOperation;
 
-        public SubMenu(string i_HeaderName ): base(i_HeaderName)
+        public SubMenu(string i_HeaderName ) : base(i_HeaderName)
         {
             m_InnerMenuItems = new List<MenuItem>(0);
         }
@@ -22,19 +22,17 @@ namespace Ex04.Menus.Interfaces
             }
         }
 
-
         public void AddAsSubMenu(MenuItem i_sun)
         {
             if(m_InnerMenuItems.Count > 0)
             {
-                m_InnerMenuItems.Insert(m_InnerMenuItems.Count -1, i_sun);
+                m_InnerMenuItems.Insert(m_InnerMenuItems.Count - 1, i_sun);
             }
             else
             {
                 m_InnerMenuItems.Add(i_sun);
             }
         }
-
 
         public void SetReturnMenu(Oparetion i_ReturnOperation)
         {
@@ -61,8 +59,9 @@ namespace Ex04.Menus.Interfaces
             bool isLastIndex = false;
             if(m_InnerMenuItems[i_Index] is Oparetion)
             {
-                isLastIndex = (m_InnerMenuItems[i_Index] as Oparetion)== m_ReturnOperation;
+                isLastIndex = (m_InnerMenuItems[i_Index] as Oparetion) == m_ReturnOperation;
             }
+
             return isLastIndex;
         }
     }

@@ -27,5 +27,4 @@ namespace Ex04.Menus.Interfaces
             Console.WriteLine(m_HeaderName);
         }
     }
-
 }

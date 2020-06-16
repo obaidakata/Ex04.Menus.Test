@@ -39,13 +39,14 @@ using System.Threading;
 
 namespace Ex04.Menus.Interfaces
 {
-    public class MainMenu: IClickObserver
+    public class MainMenu : IClickObserver
     {
         private SubMenu m_menu;
         private Oparetion m_Exit;
         private Oparetion m_Back;
         private Stack<MenuItem> m_HierarchyStack;
         private MenuItem m_CurentChosenMenuItem;
+
         public MainMenu(params MenuItem[] subMenues)
         {
             m_HierarchyStack = new Stack<MenuItem>();
@@ -61,14 +62,35 @@ namespace Ex04.Menus.Interfaces
                 {
                     (menuItem as SubMenu).SetReturnMenu(m_Back);
                 }
+
                 m_menu.AddAsSubMenu(menuItem);
             }
+
             m_CurentChosenMenuItem = m_menu;
         }
         
-        public  void Show()
+        public void Show()
         {
-            MenuNavegate();
+            int userInput;
+            do
+            {
+                m_CurentChosenMenuItem.Click();
+
+                if (m_CurentChosenMenuItem is SubMenu)
+                {
+                    userInput = getUserInput();
+                    m_HierarchyStack.Push(m_CurentChosenMenuItem);
+                    m_CurentChosenMenuItem = (m_CurentChosenMenuItem as SubMenu)[userInput];
+                }
+                else
+                {
+                    if (m_HierarchyStack.Count > 0)
+                    {
+                        m_CurentChosenMenuItem = m_HierarchyStack.Pop();
+                    }
+                }
+            }
+            while (true);
         }
 
         public void Update(Oparetion i_Sender)
@@ -83,10 +105,12 @@ namespace Ex04.Menus.Interfaces
                 {
                     m_CurentChosenMenuItem = m_HierarchyStack.Pop();
                 }
+
                 if (m_HierarchyStack.Count > 0)
                 {
                     m_CurentChosenMenuItem = m_HierarchyStack.Pop();
                 }
+
                 (m_CurentChosenMenuItem as SubMenu).Click();
             }
         }
@@ -96,30 +120,6 @@ namespace Ex04.Menus.Interfaces
             Console.WriteLine("Type");
             string userInput = Console.ReadLine();
             return int.Parse(userInput);
-        }
-
-        private void MenuNavegate()
-        {
-            int userInput;
-            do
-            {
-                m_CurentChosenMenuItem.Click();
-
-                if (m_CurentChosenMenuItem is SubMenu)
-                {
-                    userInput = getUserInput();
-                    m_HierarchyStack.Push(m_CurentChosenMenuItem);
-                    m_CurentChosenMenuItem = (m_CurentChosenMenuItem as SubMenu)[userInput];
-                }
-                else 
-                {
-                    if (m_HierarchyStack.Count > 0)
-                    {
-                        m_CurentChosenMenuItem = m_HierarchyStack.Pop();
-                    }
-                }
-
-            } while (true);
         }
     }
 }

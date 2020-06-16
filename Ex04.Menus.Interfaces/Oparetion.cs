@@ -12,11 +12,23 @@ namespace Ex04.Menus.Interfaces
     public interface IClickable
     {
         void Add(IClickObserver i_observer);
+
         void Notify();
     }
+
     public class Oparetion : MenuItem, IClickable
     {
         private List<IClickObserver> m_ClickObservers;
+
+        public static bool operator ==(Oparetion i_FirstOparetion, Oparetion i_SecondOparetion)
+        {
+            return i_FirstOparetion.Name == i_SecondOparetion.Name;
+        }
+
+        public static bool operator !=(Oparetion i_FirstOparetion, Oparetion i_SecondOparetion)
+        {
+            return !(i_FirstOparetion == i_SecondOparetion);
+        }
 
         public Oparetion(string i_HeaderName, IClickObserver i_ClickObserver) : base(i_HeaderName)
         {
@@ -43,16 +55,9 @@ namespace Ex04.Menus.Interfaces
             }
         }
 
-
-        public static bool operator ==(Oparetion i_FirstOparetion, Oparetion i_secondOparetion)
+        public override bool Equals(object i_SecondOparetion)
         {
-            return i_FirstOparetion.Name == i_secondOparetion.Name;
-        }
-
-        public static bool operator !=(Oparetion i_FirstOparetion, Oparetion i_secondOparetion)
-        {
-            return !(i_FirstOparetion == i_secondOparetion);
+            return this == (Oparetion)i_SecondOparetion;
         }
     }
-
 }

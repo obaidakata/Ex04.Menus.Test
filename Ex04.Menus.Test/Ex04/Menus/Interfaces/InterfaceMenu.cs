@@ -1,24 +1,21 @@
-﻿using Ex04.Menus.Interfaces;
-using System;
+﻿using System;
 using System.Threading;
+using Ex04.Menus.Interfaces;
 using Interfaces = Ex04.Menus.Interfaces;
-
-
 
 namespace Ex04.Menus.Test
 {
-    public class InterfaceMenu: IClickObserver
+    public class InterfaceMenu : IClickObserver
     {
-        MainMenu menu;
+        private MainMenu menu;
 
-        Oparetion m_CountCaptials;
-        Oparetion m_ShowVersion;
-        Oparetion m_TimeShow;
-        Oparetion m_DataShow;
+        private Oparetion m_CountCaptials;
+        private Oparetion m_ShowVersion;
+        private Oparetion m_TimeShow;
+        private Oparetion m_DataShow;
 
         public InterfaceMenu(int i_MenuSize)
         {
-            
             m_CountCaptials = new Oparetion("Count Captials", this as IClickObserver);
             m_ShowVersion = new Interfaces.Oparetion("Show Version", this as IClickObserver);
 
@@ -70,6 +67,7 @@ namespace Ex04.Menus.Test
             {
                 throw new Exception("sender unrecogizble");
             }
+
             Thread.Sleep(3000);
         }
 
