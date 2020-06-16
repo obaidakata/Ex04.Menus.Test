@@ -41,105 +41,81 @@ namespace Ex04.Menus.Interfaces
 {
     public class MainMenu: IClickObserver
     {
-        private List<MenuItem> m_menu;
-        private Oparetion exit;
-
+        private SubMenu m_menu;
+        private Oparetion m_Exit;
+        private Oparetion m_Back;
         public MainMenu(params MenuItem[] subMenues)
         {
-            m_menu = new List<MenuItem>();
+            m_Exit = new Oparetion("Exit");
+            m_Back = new Oparetion("Back");
+            m_Exit.Add(this as IClickObserver);
+            m_menu = new SubMenu("Menu root");
+            m_menu.SetReturnMenu(m_Exit);
             foreach(MenuItem menuItem in subMenues)
             {
-                m_menu.Add(menuItem);
+                if(menuItem is SubMenu)
+                {
+
+                }
+                m_menu.AddAsSubMenu(menuItem);
             }
-            exit = new Oparetion("Exit");
-            m_menu.Add(exit);
         }
         
-        public void Add(MenuItem m_Header)
-        {
-            m_menu.Add(m_Header);
-        }
-
         public  void Show()
         {
-            //PrintPreview();
             MenuNavegate();
         }
 
         public void Update(Oparetion i_Sender)
         {
-            if(i_Sender == exit)
+            if(i_Sender == m_Exit)
             {
                 Environment.Exit(0);
             }
-            else if(i_Sender == SubMenu.BackOperation)// check meybe can emplemnt better
-            {
-
-            }
         }
 
-        private int getUserInput()
+        private int getUserInput() // Check if userInput valid
         {
             Console.WriteLine("Type");
             string userInput = Console.ReadLine();
             return int.Parse(userInput);
         }
+
         private void MenuNavegate()
         {
-            printMenu();
+            m_menu.Print();
             Stack<MenuItem> HierarchyStack = new Stack<MenuItem>();
+            MenuItem current = m_menu;
             int userInput;
-            MenuItem current;
             do
             {
-                userInput = getUserInput();
-                // Check if userInput valid
-                current = m_menu[userInput];
-                if (current == SubMenu.BackOperation)
+                current.Click();
+                if (current is Oparetion)
                 {
+                    Thread.Sleep(3000);
                     if (HierarchyStack.Count > 0)
                     {
-                        if (current is SubMenu)
-                        {
-                            (current as SubMenu).Open = false;
-                        }
-                        current = HierarchyStack.Pop(); 
+                        current = HierarchyStack.Pop();
                     }
                 }
-                else
+                else if (current is SubMenu)
                 {
-                    HierarchyStack.Push(current);
-                    current.Click();
-                    current = (current as SubMenu)[userInput];
+                    userInput = getUserInput();
+                    if ((current as SubMenu).IsLastIndex(userInput))
+                    {
+                        if (HierarchyStack.Count > 0)
+                        {
+                            current = HierarchyStack.Pop();
+                        }
+                    }
+                    else
+                    {
+                        HierarchyStack.Push(current);
+                        current = (current as SubMenu)[userInput];
+                    }
                 }
+
             } while (true);
         }
-
-        private void printMenu()
-        {
-            Console.Clear();
-            foreach (SubMenu menuItem in m_menu)
-            {
-                menuItem.Print();
-            }
-        }
-        /*
-        public void PrintH(MenuItem menuItem)
-        {
-            
-            Console.WriteLine(menuItem.Name);
-            foreach (MenuItem innerMenu in menuItem.InnerMenu)
-            {
-                if (menuItem.IsOpen)
-                {
-                    for (int i = 0; i < innerMenu.Level - 1; i++)
-                    {
-                        Console.Write("     ");
-                    }
-                    PrintH(innerMenu);
-                }
-            }
-        }
-*/
     }
 }

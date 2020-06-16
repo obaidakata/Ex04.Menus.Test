@@ -8,39 +8,37 @@ namespace Ex04.Menus.Test
 {
     public class InterfaceMenu: IClickObserver
     {
-        Interfaces.MainMenu menu = new Interfaces.MainMenu(2);
+        Interfaces.MainMenu menu;
 
-        Interfaces.SubMenu versionAndDigit;
+        Interfaces.SubMenu versionAndDigits;
         Interfaces.Oparetion countCaptials;
         Interfaces.Oparetion showVersion;
 
-        Interfaces.SubMenu timeDataShow;
+        Interfaces.SubMenu ShowtimeData;
         Interfaces.Oparetion timeShow;
         Interfaces.Oparetion dataShow;
 
         public InterfaceMenu(int i_MenuSize)
         {
-            versionAndDigit = new SubMenu("Digits and Version");
+            versionAndDigits = new SubMenu("Version And Digits");
             countCaptials = new Oparetion("Count Captials");
             countCaptials.Add(this as IClickObserver);
             showVersion = new Interfaces.Oparetion("Show Version");
             countCaptials.Add(this as IClickObserver);
 
-            versionAndDigit.AddAsSubMenu(countCaptials);
-            versionAndDigit.AddAsSubMenu(showVersion);
+            versionAndDigits.AddAsSubMenu(countCaptials);
+            versionAndDigits.AddAsSubMenu(showVersion);
 
-            //menu.Add(versionAndDigit);
-
-            timeDataShow = new SubMenu("Time/Date Show");
+            ShowtimeData = new SubMenu("Show Time/Date ");
             timeShow = new Oparetion("Time Show");
             timeShow.Add(this as IClickObserver);
             dataShow = new Oparetion("Date Show");
             dataShow.Add(this as IClickObserver);
 
-            timeDataShow.AddAsSubMenu(timeShow);
-            timeDataShow.AddAsSubMenu(dataShow);
+            ShowtimeData.AddAsSubMenu(timeShow);
+            ShowtimeData.AddAsSubMenu(dataShow);
 
-            menu = new MainMenu(versionAndDigit, timeDataShow);
+            menu = new MainMenu(versionAndDigits, ShowtimeData);
         }
 
         public void ShowInterfaceMenu()
@@ -48,7 +46,7 @@ namespace Ex04.Menus.Test
             menu.Show();
         }
 
-        public void Update(MenuItem i_Sender)
+        public void Update(Oparetion i_Sender)
         {
             if(i_Sender == countCaptials)
             {

@@ -7,8 +7,8 @@ namespace Ex04.Menus.Test
     {
         public static void Main()
         {
-            InterfaceMenu system = new InterfaceMenu(2);
-            system.ShowInterfaceMenu();
+            InterfaceMenu interfaceMenu = new InterfaceMenu(2);
+            interfaceMenu.ShowInterfaceMenu();
 
         }
 
