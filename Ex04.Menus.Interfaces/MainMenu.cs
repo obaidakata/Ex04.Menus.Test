@@ -49,9 +49,8 @@ namespace Ex04.Menus.Interfaces
         public MainMenu(params MenuItem[] subMenues)
         {
             m_HierarchyStack = new Stack<MenuItem>();
-            m_Exit = new Oparetion("Exit");
-            m_Exit.Add(this as IClickObserver);
-            m_Back = new Oparetion("Back");
+            m_Exit = new Oparetion("Exit", this as IClickObserver);
+            m_Back = new Oparetion("Back", this as IClickObserver);
             m_Back.Add(this as IClickObserver);
 
             m_menu = new SubMenu("Menu root");

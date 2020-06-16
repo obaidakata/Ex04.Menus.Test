@@ -18,9 +18,10 @@ namespace Ex04.Menus.Interfaces
     {
         private List<IClickObserver> m_ClickObservers;
 
-        public Oparetion(string i_HeaderName) : base(i_HeaderName)
+        public Oparetion(string i_HeaderName, IClickObserver i_ClickObserver) : base(i_HeaderName)
         {
             m_ClickObservers = new List<IClickObserver>();
+            Add(i_ClickObserver);
         }
 
         public void Notify()

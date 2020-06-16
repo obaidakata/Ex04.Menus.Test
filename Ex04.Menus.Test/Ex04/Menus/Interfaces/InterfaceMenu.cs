@@ -9,37 +9,38 @@ namespace Ex04.Menus.Test
 {
     public class InterfaceMenu: IClickObserver
     {
-        Interfaces.MainMenu menu;
+        MainMenu menu;
 
-        Interfaces.SubMenu m_VersionAndDigits;
-        Interfaces.Oparetion m_CountCaptials;
-        Interfaces.Oparetion m_ShowVersion;
-
-        Interfaces.SubMenu m_ShowtimeData;
-        Interfaces.Oparetion m_TimeShow;
-        Interfaces.Oparetion m_DataShow;
+        Oparetion m_CountCaptials;
+        Oparetion m_ShowVersion;
+        Oparetion m_TimeShow;
+        Oparetion m_DataShow;
 
         public InterfaceMenu(int i_MenuSize)
         {
-            m_VersionAndDigits = new SubMenu("Version And Digits");
-            m_CountCaptials = new Oparetion("Count Captials");
-            m_CountCaptials.Add(this as IClickObserver);
-            m_ShowVersion = new Interfaces.Oparetion("Show Version");
-            m_ShowVersion.Add(this as IClickObserver);
+            
+            m_CountCaptials = new Oparetion("Count Captials", this as IClickObserver);
+            m_ShowVersion = new Interfaces.Oparetion("Show Version", this as IClickObserver);
 
-            m_VersionAndDigits.AddAsSubMenu(m_CountCaptials);
-            m_VersionAndDigits.AddAsSubMenu(m_ShowVersion);
+            m_TimeShow = new Oparetion("Time Show", this as IClickObserver);
+            m_DataShow = new Oparetion("Date Show", this as IClickObserver);
 
-            m_ShowtimeData = new SubMenu("Show Time/Date ");
-            m_TimeShow = new Oparetion("Time Show");
-            m_TimeShow.Add(this as IClickObserver);
-            m_DataShow = new Oparetion("Date Show");
-            m_DataShow.Add(this as IClickObserver);
+            buildMenu();
+        }
 
-            m_ShowtimeData.AddAsSubMenu(m_TimeShow);
-            m_ShowtimeData.AddAsSubMenu(m_DataShow);
+        private void buildMenu()
+        {
+            SubMenu versionAndDigits = new SubMenu("Version And Digits");
 
-            menu = new MainMenu(m_VersionAndDigits, m_ShowtimeData);
+            versionAndDigits.AddAsSubMenu(m_CountCaptials);
+            versionAndDigits.AddAsSubMenu(m_ShowVersion);
+
+            SubMenu showtimeData = new SubMenu("Show Time/Date ");
+
+            showtimeData.AddAsSubMenu(m_TimeShow);
+            showtimeData.AddAsSubMenu(m_DataShow);
+
+            menu = new MainMenu(versionAndDigits, showtimeData);
         }
 
         public void ShowInterfaceMenu()
@@ -71,8 +72,6 @@ namespace Ex04.Menus.Test
             }
             Thread.Sleep(3000);
         }
-
-        
 
         private void countCapitals()
         {
@@ -109,7 +108,7 @@ namespace Ex04.Menus.Test
 
         private void ShowDate()
         {
-            Console.WriteLine(string.Format("Today's date is : {0}", DateTime.Now.Date.ToString("dd/mm/yyyy")));
+            Console.WriteLine(string.Format("Today's date is : {0}", DateTime.Now.Date.ToString("dd/MM/yyyy")));
         }
     }
 }
