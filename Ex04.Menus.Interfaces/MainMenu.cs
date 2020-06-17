@@ -41,21 +41,22 @@ namespace Ex04.Menus.Interfaces
 {
     public class MainMenu : IClickObserver
     {
-        private SubMenu m_menu;
-        private Oparetion m_Exit;
-        private Oparetion m_Back;
+        private SubMenu m_Menu;
+        private Button m_Exit;
+        private Button m_Back;
         private Stack<MenuItem> m_HierarchyStack;
         private MenuItem m_CurentChosenMenuItem;
+        private bool m_MenuExit;
 
         public MainMenu(params MenuItem[] subMenues)
         {
+            m_MenuExit = false;
             m_HierarchyStack = new Stack<MenuItem>();
-            m_Exit = new Oparetion("Exit", this as IClickObserver);
-            m_Back = new Oparetion("Back", this as IClickObserver);
-            m_Back.Add(this as IClickObserver);
+            m_Exit = new Button("Exit", this as IClickObserver);
+            m_Back = new Button("Back", this as IClickObserver);
 
-            m_menu = new SubMenu("Menu root");
-            m_menu.SetReturnMenu(m_Exit);
+            m_Menu = new SubMenu("Menu Menu");
+            
             foreach(MenuItem menuItem in subMenues)
             {
                 if(menuItem is SubMenu)
@@ -63,10 +64,11 @@ namespace Ex04.Menus.Interfaces
                     (menuItem as SubMenu).SetReturnMenu(m_Back);
                 }
 
-                m_menu.AddAsSubMenu(menuItem);
+                m_Menu.AddAsSubMenu(menuItem);
             }
 
-            m_CurentChosenMenuItem = m_menu;
+            m_Menu.SetReturnMenu(m_Exit);
+            m_CurentChosenMenuItem = m_Menu;
         }
         
         public void Show()
@@ -74,7 +76,7 @@ namespace Ex04.Menus.Interfaces
             int userInput;
             do
             {
-                m_CurentChosenMenuItem.Click();
+                m_CurentChosenMenuItem.Press();
 
                 if (m_CurentChosenMenuItem is SubMenu)
                 {
@@ -90,36 +92,49 @@ namespace Ex04.Menus.Interfaces
                     }
                 }
             }
-            while (true);
+            while (!m_MenuExit);
+            Console.Clear();
         }
 
-        public void Update(Oparetion i_Sender)
+        public void Update(Button i_Sender)
         {
             if(i_Sender == m_Exit)
             {
-                Environment.Exit(0);
+                m_MenuExit = true;
             }
             else if (i_Sender == m_Back)
             {
-                if (m_HierarchyStack.Count > 0)
+                if (m_HierarchyStack.Count > 1)
                 {
+                    m_CurentChosenMenuItem = m_HierarchyStack.Pop();
                     m_CurentChosenMenuItem = m_HierarchyStack.Pop();
                 }
 
-                if (m_HierarchyStack.Count > 0)
-                {
-                    m_CurentChosenMenuItem = m_HierarchyStack.Pop();
-                }
-
-                (m_CurentChosenMenuItem as SubMenu).Click();
+                (m_CurentChosenMenuItem as SubMenu).Press();
             }
         }
 
-        private int getUserInput() // Check if userInput valid
+        private int getUserInput()
         {
-            Console.WriteLine("Type");
-            string userInput = Console.ReadLine();
-            return int.Parse(userInput);
+            int input = 0;
+            Console.Write("Enter your choice: ");
+            bool validInput = false;
+            bool inputInRange = false;
+            while (!validInput || !inputInRange)
+            {
+                validInput = int.TryParse(Console.ReadLine(), out input);
+                if (validInput)
+                {
+                    inputInRange = input >= 0 && input < (m_CurentChosenMenuItem as SubMenu).Count;
+                }
+
+                if (!validInput || !inputInRange)
+                {
+                    Console.Write("Invalid input, please try again: ");
+                }
+            }
+
+            return input;
         }
     }
 }

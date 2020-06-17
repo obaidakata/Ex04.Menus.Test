@@ -6,6 +6,7 @@ namespace Ex04.Menus.Interfaces
     public abstract class MenuItem
     {
         protected string m_HeaderName;
+        private int m_Level;
 
         public string Name
         {
@@ -15,16 +16,25 @@ namespace Ex04.Menus.Interfaces
             }
         }
 
+        public int Level
+        {
+            get
+            {
+                return m_Level;
+            }
+
+            set
+            {
+                m_Level = value;
+            }
+        }
+
         protected MenuItem(string i_HeaderName)
         {
+            m_Level = 0;
             m_HeaderName = i_HeaderName;
         }
 
-        public abstract void Click();
-
-        public void PrintName()
-        {
-            Console.WriteLine(m_HeaderName);
-        }
+        public abstract void Press();
     }
 }

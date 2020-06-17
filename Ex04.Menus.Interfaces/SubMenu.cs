@@ -7,9 +7,17 @@ namespace Ex04.Menus.Interfaces
     public class SubMenu : MenuItem
     {
         private List<MenuItem> m_InnerMenuItems;
-        private Oparetion m_ReturnOperation;
+        private Button m_ReturnOperation;
+        
+        public int Count
+        {
+            get
+            {
+                return m_InnerMenuItems.Count;
+            }
+        }
 
-        public SubMenu(string i_HeaderName ) : base(i_HeaderName)
+        public SubMenu(string i_HeaderName) : base(i_HeaderName)
         {
             m_InnerMenuItems = new List<MenuItem>(0);
         }
@@ -18,29 +26,25 @@ namespace Ex04.Menus.Interfaces
         {
             get
             {
+                i += m_InnerMenuItems.Count - 1;
+                i %= m_InnerMenuItems.Count;
                 return m_InnerMenuItems[i];
             }
         }
 
         public void AddAsSubMenu(MenuItem i_sun)
         {
-            if(m_InnerMenuItems.Count > 0)
-            {
-                m_InnerMenuItems.Insert(m_InnerMenuItems.Count - 1, i_sun);
-            }
-            else
-            {
-                m_InnerMenuItems.Add(i_sun);
-            }
+            i_sun.Level = Level + 1;
+            m_InnerMenuItems.Add(i_sun);
         }
 
-        public void SetReturnMenu(Oparetion i_ReturnOperation)
+        public void SetReturnMenu(Button i_ReturnOperation)
         {
             m_ReturnOperation = i_ReturnOperation;
-            m_InnerMenuItems.Add(m_ReturnOperation);
+            m_InnerMenuItems.Add(i_ReturnOperation);
         }
 
-        public override void Click()
+        public override void Press()
         {
             Console.Clear();
             Print();
@@ -48,18 +52,22 @@ namespace Ex04.Menus.Interfaces
 
         public void Print()
         {
+            Console.WriteLine("Level {0}, {1}", Level, Name);
+            int i = 1;
             foreach (MenuItem innerMenu in m_InnerMenuItems)
             {
-                innerMenu.PrintName();
+                Console.WriteLine("({0}) {1}", i, innerMenu.Name);
+                i++;
+                i %= m_InnerMenuItems.Count;
             }
         }
 
         public bool IsLastIndex(int i_Index)
         {
             bool isLastIndex = false;
-            if(m_InnerMenuItems[i_Index] is Oparetion)
+            if(m_InnerMenuItems[i_Index] is Button)
             {
-                isLastIndex = (m_InnerMenuItems[i_Index] as Oparetion) == m_ReturnOperation;
+                isLastIndex = (m_InnerMenuItems[i_Index] as Button) == m_ReturnOperation;
             }
 
             return isLastIndex;

@@ -1,26 +1,27 @@
 ﻿using System;
 using System.Threading;
 using Ex04.Menus.Interfaces;
+using Microsoft.VisualBasic.CompilerServices;
 using Interfaces = Ex04.Menus.Interfaces;
 
 namespace Ex04.Menus.Test
 {
     public class InterfaceMenu : IClickObserver
     {
-        private MainMenu menu;
+        private MainMenu m_Menu;
 
-        private Oparetion m_CountCaptials;
-        private Oparetion m_ShowVersion;
-        private Oparetion m_TimeShow;
-        private Oparetion m_DataShow;
+        private Button m_CountCaptials;
+        private Button m_ShowVersion;
+        private Button m_ShowTime;
+        private Button m_ShowDate;
 
         public InterfaceMenu(int i_MenuSize)
         {
-            m_CountCaptials = new Oparetion("Count Captials", this as IClickObserver);
-            m_ShowVersion = new Interfaces.Oparetion("Show Version", this as IClickObserver);
+            m_CountCaptials = new Button("Count Captials", this as IClickObserver);
+            m_ShowVersion = new Interfaces.Button("Show Version", this as IClickObserver);
 
-            m_TimeShow = new Oparetion("Time Show", this as IClickObserver);
-            m_DataShow = new Oparetion("Date Show", this as IClickObserver);
+            m_ShowTime = new Button("Show Time", this as IClickObserver);
+            m_ShowDate = new Button("Show Date", this as IClickObserver);
 
             buildMenu();
         }
@@ -34,18 +35,18 @@ namespace Ex04.Menus.Test
 
             SubMenu showtimeData = new SubMenu("Show Time/Date ");
 
-            showtimeData.AddAsSubMenu(m_TimeShow);
-            showtimeData.AddAsSubMenu(m_DataShow);
+            showtimeData.AddAsSubMenu(m_ShowTime);
+            showtimeData.AddAsSubMenu(m_ShowDate);
 
-            menu = new MainMenu(versionAndDigits, showtimeData);
+            m_Menu = new MainMenu(versionAndDigits, showtimeData);
         }
 
         public void ShowInterfaceMenu()
         {
-            menu.Show();
+            m_Menu.Show();
         }
 
-        public void Update(Oparetion i_Sender)
+        public void Update(Button i_Sender)
         {
             if (i_Sender == m_CountCaptials)
             {
@@ -55,13 +56,13 @@ namespace Ex04.Menus.Test
             {
                 showVersion();
             }
-            else if (i_Sender == m_TimeShow)
+            else if (i_Sender == m_ShowTime)
             {
                 ShowTime();
             }
-            else if (i_Sender == m_DataShow)
+            else if (i_Sender == m_ShowDate)
             {
-                ShowDate();
+                showDate();
             }
             else
             {
@@ -104,7 +105,7 @@ namespace Ex04.Menus.Test
             Console.WriteLine(string.Format("Current time is : {0}", DateTime.Now.ToString("HH:mm:ss")));
         }
 
-        private void ShowDate()
+        private void showDate()
         {
             Console.WriteLine(string.Format("Today's date is : {0}", DateTime.Now.Date.ToString("dd/MM/yyyy")));
         }

@@ -6,7 +6,7 @@ namespace Ex04.Menus.Interfaces
 {
     public interface IClickObserver
     {
-        void Update(Oparetion i_Sender);
+        void Update(Button i_Sender);
     }
 
     public interface IClickable
@@ -16,21 +16,21 @@ namespace Ex04.Menus.Interfaces
         void Notify();
     }
 
-    public class Oparetion : MenuItem, IClickable
+    public class Button : MenuItem, IClickable
     {
         private List<IClickObserver> m_ClickObservers;
 
-        public static bool operator ==(Oparetion i_FirstOparetion, Oparetion i_SecondOparetion)
+        public static bool operator ==(Button i_FirstOparetion, Button i_SecondOparetion)
         {
             return i_FirstOparetion.Name == i_SecondOparetion.Name;
         }
 
-        public static bool operator !=(Oparetion i_FirstOparetion, Oparetion i_SecondOparetion)
+        public static bool operator !=(Button i_FirstOparetion, Button i_SecondOparetion)
         {
             return !(i_FirstOparetion == i_SecondOparetion);
         }
 
-        public Oparetion(string i_HeaderName, IClickObserver i_ClickObserver) : base(i_HeaderName)
+        public Button(string i_HeaderName, IClickObserver i_ClickObserver) : base(i_HeaderName)
         {
             m_ClickObservers = new List<IClickObserver>();
             Add(i_ClickObserver);
@@ -46,7 +46,7 @@ namespace Ex04.Menus.Interfaces
             m_ClickObservers.Add(i_ClickObserver);
         }
 
-        public override void Click()
+        public override void Press()
         {
             Console.Clear();
             foreach (IClickObserver observer in m_ClickObservers)
@@ -57,7 +57,7 @@ namespace Ex04.Menus.Interfaces
 
         public override bool Equals(object i_SecondOparetion)
         {
-            return this == (Oparetion)i_SecondOparetion;
+            return this == (Button)i_SecondOparetion;
         }
     }
 }
