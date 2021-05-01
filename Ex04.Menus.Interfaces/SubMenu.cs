@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Ex04.Menus.Interfaces
 {
@@ -60,17 +59,6 @@ namespace Ex04.Menus.Interfaces
                 i++;
                 i %= m_InnerMenuItems.Count;
             }
-        }
-
-        public bool IsLastIndex(int i_Index)
-        {
-            bool isLastIndex = false;
-            if(m_InnerMenuItems[i_Index] is Button)
-            {
-                isLastIndex = (m_InnerMenuItems[i_Index] as Button) == m_ReturnOperation;
-            }
-
-            return isLastIndex;
         }
     }
 }

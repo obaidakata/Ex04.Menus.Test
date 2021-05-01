@@ -1,41 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Threading;
-/*public struct Item
-{
-    public List<Item> m_InnerItems;
-    public string m_Name;
-    public bool m_IsOperation;
-
-    public Item(int i_Size, string i_Name)
-    {
-        m_InnerItems = new List<Item>(i_Size);
-        m_Name = i_Name;
-        m_IsOperation = false;
-    }
-
-    public Item(string i_Name)
-    {
-        m_InnerItems = new List<Item>(0);
-        m_Name = i_Name;
-        m_IsOperation = true;
-    }
-
-    public int Length
-    {
-        get
-        {
-            return m_InnerItems.Count;
-        }
-    }
-
-    public void Add(Item i_InnerItem)
-    {
-        m_InnerItems.Add(i_InnerItem);
-    }
-}
-*/
 
 namespace Ex04.Menus.Interfaces
 {

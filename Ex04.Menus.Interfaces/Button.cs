@@ -12,8 +12,6 @@ namespace Ex04.Menus.Interfaces
     public interface IClickable
     {
         void Add(IClickObserver i_observer);
-
-        void Notify();
     }
 
     public class Button : MenuItem, IClickable
@@ -34,11 +32,6 @@ namespace Ex04.Menus.Interfaces
         {
             m_ClickObservers = new List<IClickObserver>();
             Add(i_ClickObserver);
-        }
-
-        public void Notify()
-        {
-            throw new NotImplementedException();
         }
 
         public void Add(IClickObserver i_ClickObserver)
